@@ -1,0 +1,32 @@
+public class Main {
+    
+    public static boolean filasOrdenadas(int[][] matriz) {
+        int max = 0;
+        for (int filas = 0; filas < matriz.length; filas++) {
+            for (int cols = 0; cols < matriz[filas].length -1 ; cols++){
+                if (matriz[filas][cols] > matriz[filas][cols +1]) {
+                    return false;
+                }
+        
+                }
+        }
+        return true;
+    }
+    
+    
+    
+    
+
+    public static void main(String[] args) {
+
+        int[][] matriz = {
+            {1, 2, 3},
+            {4, 5, 6},
+            {7, 6, 9}
+        };
+
+        boolean resultado = filasOrdenadas(matriz);
+
+        System.out.println("¿Todas las filas están ordenadas? " + resultado);
+    }
+}
