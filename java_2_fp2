@@ -1,0 +1,62 @@
+import java.util.Scanner;
+
+public class Solution {
+
+    public static void printTriangleRectangle(int n) {
+        for (int fila = 1; fila <= n; fila++) {
+            for (int estrella = 1; estrella <= fila; estrella++) {
+                System.out.print("*");
+            }
+            System.out.println();
+        }
+    }
+
+    public static void printSquare(int n) {
+        for (int fila = 1; fila <= n; fila++) {
+            for (int columna = 1; columna <= n; columna++) {
+                if (fila == 1 || fila == n || columna == 1 || columna == n) {
+                    System.out.print("*");
+                } else {
+                    System.out.print(" ");
+                }
+            }
+            System.out.println();
+        }
+    }
+
+    public static void printPyramid(int n) {
+        for (int fila = 1; fila <= n; fila++) {
+            for (int espacio = 1; espacio <= n - fila; espacio++) {
+                System.out.print(" ");
+            }
+
+            for (int estrella = 1; estrella <= fila * 2 - 1; estrella++) {
+                System.out.print("*");
+            }
+
+            System.out.println();
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Introduzca un número entero: ");
+        int size = scanner.nextInt();
+
+        scanner.close();
+
+        System.out.println("Triángulo Rectángulo:");
+        printTriangleRectangle(size);
+
+        System.out.println();
+
+        System.out.println("Cuadrado:");
+        printSquare(size);
+
+        System.out.println();
+
+        System.out.println("Pirámide:");
+        printPyramid(size);
+    }
+}
