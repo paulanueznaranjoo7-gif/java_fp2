@@ -1,0 +1,141 @@
+public class Inventory {
+    
+    private Node first;
+    private Node last;
+    
+    public Inventory() {
+        
+        first = null;
+        last = null;
+    }
+    
+    public void addProduct(Product product) {
+        Node newNode = new Node(product);
+        if (this.first != null) {
+            this.last.next = newNode;
+            this.last = newNode;
+        }
+        else {
+            this.first = newNode;
+            this.last = newNode;
+        }
+    }
+    
+    public Product removeByCode(String code) {
+        Node prev = this.first;
+        Node current = this.first.next;
+        
+        Product eliminado = null;
+        
+        if (this.first.value.getCode().equals(code)) {
+            eliminado = this.first.value;
+            this.first = this.first.next;
+            return eliminado;
+        }
+        
+        while (current != null) {
+            if (!current.value.getCode().equals(code)) {
+                prev = current;
+                current = current.next;
+                
+                
+            }
+            else {
+                eliminado = current.value;
+                prev.next = current.next;
+                return eliminado;
+            }
+           
+        }
+        return null;
+        
+    }
+    
+    public Product getMostExpensive() {
+        
+        if (this.first == null) {
+            return null;
+        }
+        
+        Node current = this.first;
+        double maximo = -99999;
+        Product maxima = null;
+        
+        while (current != null) {
+            if (current.value.getPrice() > maximo) {
+                maximo = current.value.getPrice();
+                maxima = current.value;
+            }
+            current = current.next;
+            
+        }
+        return maxima;
+        
+    }
+    
+    public int size() {
+        int productos = 0;
+        Node current = this.first;
+        
+        while (current != null) {
+            productos++;
+            current = current.next;
+        }
+        return productos;
+    }
+    
+    public String[] GetCodes() {
+        Node current = this.first;
+        int n = 0;
+        
+        while (current != null) {
+            n++;
+            current = current.next;
+            
+        }
+        
+        String[] listaproducts = new String[n];
+        current = this.first; //xq volvemos a recorrer
+        for (int i = 0; i < n; i++) {
+            listaproducts[i] = current.value.getCode(); //yo lo que quiero es el code, asi que especifico
+            current = current.next;
+        }
+        return listaproducts;
+    }
+    
+    public Product[] getProductsOver(double minPrice) {
+        Node current = this.first;
+        int n = 0;
+        
+        while (current != null) {
+            if (current.value.getPrice() > minPrice) {
+                n++;
+            }
+            current = current.next;
+        }
+        
+        Product[] menoresque = new Product[n];
+        current = this.first; 
+        int pos = 0;
+        while (current != null) {
+            if (current.value.getPrice() >  minPrice) {
+                menoresque[pos] = current.value;
+                pos++;
+            }
+            current = current.next;
+        }
+        return menoresque;
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+}
