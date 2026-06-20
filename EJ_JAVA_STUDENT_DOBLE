@@ -1,0 +1,234 @@
+public class StudentList {
+    
+    private Node first;
+    private Node last;
+    
+    public StudentList() {
+        first = null;
+        last = null;
+    }
+    
+    public void addStudent(Student student) {
+        Node newNode = new Node(student);
+        if (this.first == null) {
+            this.first = newNode;
+            this.last = newNode;
+        }
+        else {
+            this.last.next = newNode;
+            newNode.prev = this.last;
+            this.last = newNode;
+        }
+    }
+    
+    public void  insertAtPosition(int position, Student student) {
+        if (position < 0) {
+           throw  new IndexOutOfBoundsException("La posición debe ser positiva");
+        }
+        
+        Node newNode = new Node(student);
+         
+        if (this.first == null) {
+            if (position == 0)  {
+                this.first = newNode;
+                this.last = newNode;
+            }
+        }
+        
+        if (position == 0) {
+            newNode.next = this.first;
+            this.first.prev = newNode;
+            this.first = newNode;
+        }
+        
+        Node prev = this.first;
+        Node current = this.first.next;
+        int current_pos = 1;
+        
+        while (current_pos < position &&  current != null) {
+            prev = current;
+            current = current.next;
+            current_pos++;
+        }
+        
+        if (current == null && current_pos < position) {
+            return;
+        }
+        
+        prev.next = newNode;
+        newNode.prev = prev;
+        newNode.next = current;
+        current.prev = newNode;
+        
+        if (current == null) {
+            this.last = newNode;
+        }
+        else {
+            current.prev = newNode;
+            
+        }
+        
+    }
+    
+    public Student  removeAtPosition(int position) {
+        
+        Student eliminado = null;
+        
+        if (this.first == null) {
+            return null;
+        }
+        
+        if (position < 0) {
+            throw new ArrayIndexOutOfBoundsException("La posición debe ser positiva");
+        }
+        
+        if (position == 0) {
+            eliminado = this.first.value;
+            this.first = this.first.next;
+            if (this.first != null) {
+                this.first.prev = null;
+            }
+            else  {
+                this.last = null;
+            }
+            return eliminado;
+            
+        }
+        
+        else {
+            Node prev = this.first;
+            Node current = this.first.next;
+            int current_pos = 1;
+            
+            
+            while (current_pos < position && current != null) {
+                prev = current;
+                current = current.next;
+                current_pos++;
+            }
+            
+            if (current == null) {
+                return null;
+            }
+            
+            eliminado = current.value;
+            prev.next = current.next;
+            if (current.next != null) {
+                current.next.prev = prev;
+            }
+            else {
+                this.last = prev;
+            }
+            
+            
+        }
+        return eliminado;
+    }
+    
+    public void  moveToFront(int position) {
+        
+        if (this.first == null) {
+        }
+        
+        if (position < 0) {
+            throw new ArrayIndexOutOfBoundsException("La posición es 0");
+        }
+        
+        if (position == 0) {
+            
+        }
+        
+        else {
+            Node current = this.first;
+            int current_pos = 0;
+            
+            while (current_pos < position && current != null) {
+                current = current.next;
+                current_pos++;
+                
+            }
+            
+            if (current == null  && current_pos < position) {
+            }
+            
+            current.prev.next = current.next;
+            current.next = this.first;
+            this.first.prev = current;
+            this.first = current;
+
+        }
+    }
+    
+    public Student getBestStudent() {
+        Node current = this.first;
+        double max = -99999;
+        
+        Student estudiante = null;
+        
+        while (current != null) {
+            if (current.value.getGrade() > max) {
+                max = current.value.getGrade();
+                estudiante = current.value;
+                
+            }
+            current = current.next;
+        }
+        return estudiante;
+    }
+    
+    public String[] getNamesAndGrades() {
+        Node current = this.first;
+        int n = 0;
+        
+        while (current != null) {
+            n++;
+            current = current.next;
+            
+        }
+        String[] estudiantes = new String[n];
+        current = this.first;
+        while (current != null) {
+            for (int i = 0; i < n; i++) {
+                estudiantes[i] = current.value.getName() + ":" + current.value.getGrade();
+                current = current.next;
+            }
+        }
+        return estudiantes;
+    }
+    
+    public int size() {
+        Node current = this.first;
+        int contador = 0;
+        
+        while (current != null) {
+            contador++;
+            current = current.next;
+        }
+        return contador;
+    }
+    
+    @Override
+    public String toString() {
+
+        String texto = "";
+
+        Node current = this.first;
+
+        while (current != null) {
+            texto += "[" + current.value + "] <-> ";
+            current = current.next;
+        }   
+
+        return texto + "null";
+    }   
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+}
