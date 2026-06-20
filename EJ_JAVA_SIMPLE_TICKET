@@ -1,0 +1,134 @@
+public class TicketOffice {
+    
+    private Node first;
+    private Node last;
+    
+    public TicketOffice()  {
+        first =  null;
+        last = null;
+    }
+    
+
+    public void addTicket(Ticket ticket) {
+        Node newNode = new Node(ticket);
+        if (this.first != null) {
+            this.last.next = newNode;
+            newNode.prev = this.last;
+            this.last = newNode;
+        } 
+        else {
+            this.first = newNode;
+            this.last = newNode;
+        }
+    }
+    
+    public Ticket removeByCode(String code) {
+        
+        Ticket eliminado = null;
+        
+        if (this.first == null) {
+            return;
+        }
+        
+        if (this.first.next == null) {
+            if (this.first.value.getCode().equals(code)) {
+            eliminado = this.first.value;
+            }
+          return eliminado;
+        }
+        
+        Node prev = this.first;
+        Node current = this.first.next;
+        while (current != null) {
+            if (current.value.getCode().equals(code)) {
+                eliminado = current.value;
+                prev.next = current.next;
+                return eliminado;
+                
+            }
+            prev = current;
+            current = current.next;
+        }
+        
+        if (current.prev.value.getCode().equals(code)) {
+            this.last = prev;
+            current = null;
+        }
+        else {
+            this.last = current.prev;
+        }
+        return eliminado;
+    }
+    
+    public Ticket getMostExpensive() {
+        Node current = this.first;
+        double maximo = -99999;
+        Ticket caro = null;
+        while (current != null) {
+            if (current.value.getPrice() > maximo) {
+                maximo = current.value.getPrice();
+                caro = current.value;
+                
+            }
+            current = current.next;
+        }
+        return caro;
+        
+        
+    }
+    
+    public Ticket[] getTicketsOver(double price) {
+        Node current = this.first;
+        int n = 0;
+        
+        while (current != null) {
+            if (current.value.getPrice() > price) {
+                n++;
+            }
+            current = current.next;
+        }
+        
+        Ticket[] entradas = new Ticket[n];
+        current = this.first;
+        int pos = 0;
+        while (current != null) {
+            if (current.value.getPrice() > price) {
+                entradas[pos] = current.value;
+                pos++;
+            }
+            current = current.next;
+        }
+        return entradas;
+          
+    }
+    
+    public void duplicateExpensiveTickets(double price) {
+        Node current = this.first;
+        Node copia = this.first;
+        while (current != null) {
+            if (!(current.value.getPrice() > price)) {
+                current = current.next;
+                copia = copia.next;
+            }
+            current.next = copia;
+            copia.prev = current;
+            
+            }
+    }
+    
+        @Override
+        public String toString() {
+
+        String texto = "";
+
+        Node current = this.first;
+
+        while (current != null) {
+            texto += "[" + current.value + "] <-> ";
+            current = current.next;
+        }
+
+        return texto + "null";
+        }
+        
+}
