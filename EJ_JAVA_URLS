@@ -1,0 +1,106 @@
+public class BrowserHistory extends ContainerBase {
+    public void visit(String url) {
+
+    Node newNode = new Node(url);
+
+    // Historial vacío
+    if (this.first == null) {
+        this.first = newNode;
+        this.current = newNode;
+        return;
+    }
+
+    // Si hay páginas por delante, las eliminamos
+    if (this.current.next != null) {
+        this.current.next = null;
+    }
+
+    // Añadir detrás de la actual
+    newNode.prev = this.current;
+    this.current.next = newNode;
+
+    // La nueva pasa a ser la actual
+    this.current = newNode;
+}
+    
+    public Boolean back() {
+        if (this.current.prev != null) {
+            this.current = this.current.prev;
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    
+    public Boolean forward() {
+        if (this.current.next != null) {
+            this.current = this.current.next;
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    
+    public String getCurrentUrl() {
+        if (this.current == null) {
+            return null;
+        }
+        else {
+            return this.current.url;
+        }
+    }
+    
+    public Boolean revisited(String url) {
+        Node current = this.first;
+        int contador = 0;
+        while (current != null) {
+            if (current.url == url) {
+                contador++;
+                if (contador > 1 ) {
+                    return true;
+                }
+            }
+            current = current.next;
+            }
+            return false;
+        }
+        
+    
+    public String[] getHistory() {
+        int n = 0;
+        Node current = this.first;
+        
+        while (current != null) {
+            n++;
+            current = current.next;
+        }
+        
+        String[] listaUrls = new String[n];
+        current = this.first;
+        while (current != null) {
+            for (int i = 0; i < n; i++) {
+                listaUrls[i] = current.url;
+                current = current.next;
+            }
+        }
+        return listaUrls;
+        
+    }
+    
+    public int getSize() {
+        int tamaño = 0;
+        Node current = this.first;
+        
+        while (current != null) {
+            tamaño++;
+            current = current.next;
+        }
+        return tamaño;
+    }
+    
+    
+    
+    
+}
