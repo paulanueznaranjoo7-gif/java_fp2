@@ -1,0 +1,110 @@
+public class OrderList extends OrderListBase {
+    
+    private String restaurante;
+    
+    // al restaurantes
+    private static int[] totalsummaryorders = new int[2];
+    
+    // one restaurante
+    private int[] summaryorders;
+    
+    public OrderList(String restaurante) {
+        this.restaurante = restaurante;
+        summaryorders = new int[2];
+    }
+    
+    public Order serve(int index) {
+        
+        Order eliminado = null;
+        
+        
+        if (index < 0) {
+            throw new IndexOutOfBoundsException("posicion es menor que 0");
+        }
+        
+        if (this.first == null) {
+            return null;
+        }
+        
+        if (index == 0) {
+            totalsummaryorders[0] += 1;
+            totalsummaryorders[1] += this.first.data.price;
+            summaryorders[0] += 1;
+            summaryorders[1] += this.first.data.price;
+            eliminado = this.first.data;
+            this.first = this.first.next;
+            return eliminado;
+            }
+           
+
+        
+        else {
+            Node prev = this.first;
+            Node current = this.first;
+            int current_pos = 0;
+            
+            while (current_pos < index && current != null) {
+                prev = current;
+                current = current.next;
+                current_pos++;
+            }
+            
+            if (current == null) {
+                return null;
+            }
+            totalsummaryorders[0] += 1;
+            totalsummaryorders[1] += current.data.price;
+            summaryorders[0] += 1;
+            summaryorders[1] += current.data.price;
+            eliminado = current.data;
+            prev.next = current.next;
+            if (current.next == null) {
+                this.last = prev;
+            }
+            return eliminado;
+        }
+
+    }
+    
+    public int[] getSummaryOrders() {
+        return summaryorders;
+    }
+    
+    public static int[] totalSummaryOrders() {
+        return totalsummaryorders;
+    }
+    
+    public Order[] getOrderList() {
+        Node current = this.first;
+        int n = 0;
+        
+        while (current != null) {
+            n++;
+            current = current.next;
+        }
+        
+        Order[] comandas = new Order[n];
+        current = this.first;
+        
+        while (current != null) {
+            for (int i = 0; i < n; i++ ) {
+                comandas[i] = current.data;
+                current = current.next;
+            }
+            
+        }
+        return comandas;
+        
+    }
+    
+    public String toString() {
+        return this.restaurante + ":" + super.toString();
+    }
+    
+    
+    
+    
+    
+    
+    
+}
