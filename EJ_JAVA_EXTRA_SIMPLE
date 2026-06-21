@@ -1,0 +1,101 @@
+public class TaskList extends TaskListBase {
+    
+    private static int totaltimespent = 0;
+    
+    private int timeleft;
+    private int timespent;
+    
+    public TaskList() {
+        timeleft = 0;
+        timespent = 0;
+    }
+    
+    public Task taskCompleted(int index) {
+        
+        Task eliminado = null;
+        
+        if (this.first == null) {
+            return null;
+        }
+        
+        if (index < 0) {
+            return null;
+        }
+        
+        if (index == 0) {
+            timespent += this.first.value.getDuration();
+            totaltimespent += this.first.value.getDuration();
+            eliminado = this.first.value;
+            this.first = this.first.next;
+            return eliminado;
+        }
+        else {
+            Node prev = this.first;
+            Node current = this.first.next;
+            int current_pos = 1;
+            
+            while (current_pos < index && current != null) {
+                prev = current;
+                current = current.next;
+                current_pos++;
+            }
+            
+            if (current == null && current_pos < index) {
+                return null;
+            }
+            timespent += current.value.getDuration();
+            totaltimespent += current.value.getDuration();
+            eliminado = current.value;
+            prev.next = current.next;
+        
+            
+            
+        }
+        return eliminado;
+    }
+    
+    public int getTimeLeft() {
+        int suma = 0;
+        Node current = this.first;
+        int total = 0;
+        
+        while (current != null) {
+            suma += current.value.getDuration();
+            current = current.next;
+        }
+        total = suma + timespent;
+        return total - timespent;
+    }
+    
+    public int getTimeSpent() {
+        return timespent;
+        
+    }
+    
+    public static int getTotalTimeSpent() {
+        return totaltimespent;
+    }
+    
+    public Task[] getTaskArray() {
+        Node current = this.first;
+        int n = 0;
+        while (current != null) {
+           n++;
+           current = current.next;
+        }
+        Task[] Tareas = new Task[n];
+        current = this.first;
+        while (current != null) {
+            for (int i = 0; i < n; i++) {
+                Tareas[i] = current.value;
+                current = current.next;
+            }
+        }
+        return Tareas;
+    }
+    
+    
+    
+    
+    
+}
