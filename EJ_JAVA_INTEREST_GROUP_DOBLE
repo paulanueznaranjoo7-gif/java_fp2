@@ -1,0 +1,121 @@
+public class InterestGroup extends ContainerBase {
+
+    
+    public InterestGroup() {
+        
+    }
+    
+    public Boolean isMember(String name) {
+        Node current = this.first;
+        
+        while (current != null) {
+            if (current.value.equals(name)) {
+                return true;
+            }
+            else {
+                current = current.next;
+            }
+        }
+        return false;
+    }
+    
+    public Boolean addMember(String name) {
+        Node newNode = new Node(name);
+        Node current = this.first;
+        
+        if (this.first == null) {
+            this.first = newNode;
+            this.last = newNode;
+        }
+        
+        else {
+        current = this.first;
+        
+        
+        while (current != null) {
+            if (current.value.equals(name)) {
+                return false;
+            }
+            else {
+                current = current.next;
+            }
+            
+        }
+        this.last.next = newNode;
+        newNode.prev = this.last;
+        this.last = newNode;
+        }
+        return true;
+     
+    
+    }
+    
+    public int size() {
+        Node current = this.first;
+        int tamaño = 0;
+        while (current != null) {
+            tamaño++;
+            current = current.next;
+            
+        }
+        return tamaño;
+    }
+    
+    public InterestGroup union(InterestGroup grupo) {
+        InterestGroup gruponuevo = new InterestGroup();
+        Node current = this.first;
+        Node other = grupo.first;
+        
+        while (current != null) {
+            gruponuevo.addMember(current.value);
+            current = current.next;
+            
+        }
+        
+        other = grupo.first;
+        
+        while (other != null) {
+            gruponuevo.addMember(other.value);
+            other = other.next;
+        }
+        return gruponuevo;
+    }    
+    
+    public Boolean removeMember(String name) {
+        Node prev = this.first;
+        Node current = this.first.next;
+        
+        if (this.first == null) {
+            return null;
+        }
+        
+        if (this.first.value.equals(name)) {
+            this.first = this.first.next;
+            return true;
+        }
+        
+        while (current != null) {
+            if (current.value.equals(name)) {
+                prev.next = current.next;
+                return true;
+            }
+            else {
+                prev = current;
+                current = current.next;
+            }
+        }
+        return false;
+    }
+    
+}
+
+
+
+
+
+
+
+
+
+
+
