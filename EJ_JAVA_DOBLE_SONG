@@ -1,0 +1,135 @@
+public class Playlist extends ContainerBase {
+
+    private int duraciontotal;
+
+    public Playlist() {
+        duraciontotal = 0;
+    }
+    
+    public void addSong(Song song) {
+        Node newNode = new Node(song);
+        if (this.first != null) {
+            this.last.next = newNode;
+            newNode.prev = this.last;
+            this.last = newNode;
+        }
+        else {
+            this.first = newNode;
+            this.last = newNode;
+        }
+        }
+    
+    public void insertSong(Song song, int position) {
+        
+        Node newNode = new Node(song);
+        
+        if (position < 0) {
+            return;
+        }
+        
+        if (this.first == null && position != 0) {
+            return;
+        }
+        
+        if (position == 0) {
+            newNode.next = this.first;
+            this.first.prev = newNode;
+            this.first = newNode;
+            return;
+        }
+        
+        else {
+            Node prev = this.first;
+            Node current = this.first.next;
+            int current_pos = 1;
+            
+            while (current != null && current_pos < position) {
+                prev = current;
+                current = current.next;
+                current_pos++;
+            }
+            
+            if (current == null && current_pos < position) {
+                this.last.next = newNode;
+                newNode.prev = this.last;
+                this.last = newNode;
+                return;
+            }
+            
+            prev.next = newNode;
+            newNode.prev = prev;
+            newNode.next = current;
+            
+            if (current == null) {
+                this.last = newNode;
+            }
+            else {
+                current.prev = newNode;
+            }
+            
+        }
+        
+        
+        
+    }
+    
+    public int removeShortSongs(int seconds) {
+        int eliminadas = 0;
+        if (this.first == null) {
+            return 0;
+        }
+        
+        if (this.first.value.getDuration() < seconds) {
+            eliminadas++;
+            duraciontotal -= this.first.value.getDuration();
+            this.first = this.first.next;
+        }
+        Node prev = this.first;
+        Node current = this.first.next;
+        
+        while (current != null) {
+            if (current.value.getDuration() < seconds) {
+                eliminadas++;
+                duraciontotal -= current.value.getDuration();
+                prev.next = current.next;
+                if (current.next != null) {
+                    current.next.prev = prev;
+                }
+                else {
+                    this.last = prev;
+                }
+                current = current.next;
+            }
+            else {
+                prev = current;
+                current = current.next;
+            }
+            
+        }
+        return eliminadas;
+    }
+    
+    public Song findSong(String title) {
+        Song cancion = null;
+        Node current = this.first;
+        while (current != null) {
+            if (current.value.getTitle().equals(title)) {
+                cancion = current.value;
+                return cancion;
+            }
+            else {
+                current = current.next;
+            }
+        }
+        return null;
+    }
+    
+    public int getTotalDuration() {
+        Node current = this.first;
+        while (current != null) {
+            duraciontotal += current.value.getDuration();
+            current = current.next;
+        }
+        return duraciontotal;
+    }
+}
